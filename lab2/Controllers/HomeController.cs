@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lab2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,21 +9,19 @@ namespace lab2.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string login, string pass)
         {
-            return View();
-        }
+            if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(pass))
+                using (CourseDbEntities db = new CourseDbEntities())
+                {
+                    var p = db.People.Where(x => x.Login == login && x.Password == pass).FirstOrDefault();
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+                    if (p != null)
+                    {
+                        if (p.isTeacher)
+                            return View(); // TODO: repair
+                    }
+                }
 
             return View();
         }
