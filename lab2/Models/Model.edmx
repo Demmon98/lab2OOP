@@ -1,0 +1,446 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище CourseDbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="isTeacher" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonCourse">
+          <Key>
+            <PropertyRef Name="PersonCourseId" />
+          </Key>
+          <Property Name="PersonCourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonGrade">
+          <Key>
+            <PropertyRef Name="PersonGradeId" />
+          </Key>
+          <Property Name="PersonGradeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Grade" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "CourseDb.dbo.StudentView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="StudentView">
+          <Key>
+            <PropertyRef Name="CourseName" />
+            <PropertyRef Name="Grade" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="Expr2" />
+            <PropertyRef Name="PersonGradeId" />
+          </Key>
+          <Property Name="CourseName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Grade" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="Expr2" Type="int" Nullable="false" />
+          <Property Name="PersonGradeId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "CourseDb.dbo.TeacherView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="TeacherView">
+          <Key>
+            <PropertyRef Name="Grade" />
+            <PropertyRef Name="PersonName" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="PersonGradeId" />
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="Grade" Type="int" Nullable="false" />
+          <Property Name="PersonName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="PersonGradeId" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Course_PersonCourse">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="PersonCourse" Type="Self.PersonCourse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="PersonCourse">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_PersonGrade">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="PersonGrade" Type="Self.PersonGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="PersonGrade">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Course">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonCourse">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonCourse" Type="Self.PersonCourse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonCourse">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonGrade">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonGrade" Type="Self.PersonGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonGrade">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CourseDbModelContainer">
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonCourse" EntityType="Self.PersonCourse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonGrade" EntityType="Self.PersonGrade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentView" EntityType="Self.StudentView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StudentView].[CourseName] AS [CourseName], 
+    [StudentView].[Grade] AS [Grade], 
+    [StudentView].[Comment] AS [Comment], 
+    [StudentView].[CourseId] AS [CourseId], 
+    [StudentView].[Expr2] AS [Expr2], 
+    [StudentView].[PersonGradeId] AS [PersonGradeId]
+    FROM [dbo].[StudentView] AS [StudentView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TeacherView" EntityType="Self.TeacherView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TeacherView].[Grade] AS [Grade], 
+    [TeacherView].[PersonName] AS [PersonName], 
+    [TeacherView].[Comment] AS [Comment], 
+    [TeacherView].[PersonId] AS [PersonId], 
+    [TeacherView].[PersonGradeId] AS [PersonGradeId], 
+    [TeacherView].[CourseId] AS [CourseId]
+    FROM [dbo].[TeacherView] AS [TeacherView]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Course_PersonCourse" Association="Self.FK_Course_PersonCourse">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="PersonCourse" EntitySet="PersonCourse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_PersonGrade" Association="Self.FK_Course_PersonGrade">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="PersonGrade" EntitySet="PersonGrade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Course" Association="Self.FK_Person_Course">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonCourse" Association="Self.FK_Person_PersonCourse">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonCourse" EntitySet="PersonCourse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonGrade" Association="Self.FK_Person_PersonGrade">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonGrade" EntitySet="PersonGrade" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CourseDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersonCourses" Relationship="Self.FK_Course_PersonCourse" FromRole="Course" ToRole="PersonCourse" />
+          <NavigationProperty Name="PersonGrades" Relationship="Self.FK_Course_PersonGrade" FromRole="Course" ToRole="PersonGrade" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_Course" FromRole="Course" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="isTeacher" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Person_Course" FromRole="Person" ToRole="Course" />
+          <NavigationProperty Name="PersonCourses" Relationship="Self.FK_Person_PersonCourse" FromRole="Person" ToRole="PersonCourse" />
+          <NavigationProperty Name="PersonGrades" Relationship="Self.FK_Person_PersonGrade" FromRole="Person" ToRole="PersonGrade" />
+        </EntityType>
+        <EntityType Name="PersonCourse">
+          <Key>
+            <PropertyRef Name="PersonCourseId" />
+          </Key>
+          <Property Name="PersonCourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_Course_PersonCourse" FromRole="PersonCourse" ToRole="Course" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_PersonCourse" FromRole="PersonCourse" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="PersonGrade">
+          <Key>
+            <PropertyRef Name="PersonGradeId" />
+          </Key>
+          <Property Name="PersonGradeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Grade" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_Course_PersonGrade" FromRole="PersonGrade" ToRole="Course" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_PersonGrade" FromRole="PersonGrade" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="StudentView">
+          <Key>
+            <PropertyRef Name="CourseName" />
+            <PropertyRef Name="Grade" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="Expr2" />
+            <PropertyRef Name="PersonGradeId" />
+          </Key>
+          <Property Name="CourseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Grade" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="Expr2" Type="Int32" Nullable="false" />
+          <Property Name="PersonGradeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TeacherView">
+          <Key>
+            <PropertyRef Name="Grade" />
+            <PropertyRef Name="PersonName" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="PersonGradeId" />
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="Grade" Type="Int32" Nullable="false" />
+          <Property Name="PersonName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="PersonGradeId" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Course_PersonCourse">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="PersonCourse" Type="Self.PersonCourse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="PersonCourse">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_PersonGrade">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="PersonGrade" Type="Self.PersonGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="PersonGrade">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Course">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonCourse">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonCourse" Type="Self.PersonCourse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonCourse">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonGrade">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonGrade" Type="Self.PersonGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonGrade">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CourseDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="PersonCourses" EntityType="Self.PersonCourse" />
+          <EntitySet Name="PersonGrades" EntityType="Self.PersonGrade" />
+          <EntitySet Name="StudentViews" EntityType="Self.StudentView" />
+          <EntitySet Name="TeacherViews" EntityType="Self.TeacherView" />
+          <AssociationSet Name="FK_Course_PersonCourse" Association="Self.FK_Course_PersonCourse">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="PersonCourse" EntitySet="PersonCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_PersonGrade" Association="Self.FK_Course_PersonGrade">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="PersonGrade" EntitySet="PersonGrades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Course" Association="Self.FK_Person_Course">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonCourse" Association="Self.FK_Person_PersonCourse">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonCourse" EntitySet="PersonCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonGrade" Association="Self.FK_Person_PersonGrade">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonGrade" EntitySet="PersonGrades" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CourseDbModelContainer" CdmEntityContainer="CourseDbEntities">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="CourseDbModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="CourseDbModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PersonName" ColumnName="PersonName" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="isTeacher" ColumnName="isTeacher" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonCourses">
+            <EntityTypeMapping TypeName="CourseDbModel.PersonCourse">
+              <MappingFragment StoreEntitySet="PersonCourse">
+                <ScalarProperty Name="PersonCourseId" ColumnName="PersonCourseId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonGrades">
+            <EntityTypeMapping TypeName="CourseDbModel.PersonGrade">
+              <MappingFragment StoreEntitySet="PersonGrade">
+                <ScalarProperty Name="PersonGradeId" ColumnName="PersonGradeId" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentViews">
+            <EntityTypeMapping TypeName="CourseDbModel.StudentView">
+              <MappingFragment StoreEntitySet="StudentView">
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+                <ScalarProperty Name="PersonGradeId" ColumnName="PersonGradeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeacherViews">
+            <EntityTypeMapping TypeName="CourseDbModel.TeacherView">
+              <MappingFragment StoreEntitySet="TeacherView">
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="PersonName" ColumnName="PersonName" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PersonGradeId" ColumnName="PersonGradeId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

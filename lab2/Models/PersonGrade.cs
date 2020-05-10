@@ -12,23 +12,15 @@ namespace lab2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Course
+    public partial class PersonGrade
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Course()
-        {
-            this.PersonCourses = new HashSet<PersonCourse>();
-            this.PersonGrades = new HashSet<PersonGrade>();
-        }
-    
+        public int PersonGradeId { get; set; }
+        public int Grade { get; set; }
         public int CourseId { get; set; }
-        public string CourseName { get; set; }
         public int PersonId { get; set; }
+        public string Comment { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonCourse> PersonCourses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonGrade> PersonGrades { get; set; }
+        public virtual Course Course { get; set; }
         public virtual Person Person { get; set; }
     }
 }
