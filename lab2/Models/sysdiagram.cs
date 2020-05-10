@@ -12,13 +12,12 @@ namespace lab2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PersonCourse
+    public partial class sysdiagram
     {
-        public int PersonCourseId { get; set; }
-        public int CourseId { get; set; }
-        public int PersonId { get; set; }
-    
-        public virtual Course Course { get; set; }
-        public virtual Person Person { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

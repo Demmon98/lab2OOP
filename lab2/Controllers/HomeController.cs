@@ -18,9 +18,17 @@ namespace lab2.Controllers
 
                     if (p != null)
                     {
+                        //If teacher
                         if (p.isTeacher)
-                            return View(); // TODO: repair
+                        {
+                            int courseId = db.Courses.Where(x=>x.PersonId == p.PersonId).Select(x=>x.CourseId).FirstOrDefault();
+                            RedirectToAction("Index", "TeacherController", courseId); // TODO: TeacherController/Index
+                        }
+                        //If student
+                        else
+                            RedirectToAction("Index", "StudentController", p.PersonId); // TODO: StudentController/Index
                     }
+
                 }
 
             return View();

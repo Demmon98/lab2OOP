@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Teacher view";
+}
+@using lab2.Models
+@model List<TeacherView>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Grade</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>@item.PersonName</th>
+                    <th>@item.Grade</th>
+                    <th><a>Action</a></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
